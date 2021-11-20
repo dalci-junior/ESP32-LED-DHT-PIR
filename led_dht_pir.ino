@@ -2,8 +2,8 @@
 #include "DHT.h"
 
 // Constante para definir rede a ser conectada
-const char* ssid = "Casa_2.4";
-const char* password = "takenking";
+const char* ssid = "RouterTest";
+const char* password = "routertest";
 
 // Setting Static IP.
 IPAddress local_IP(192, 168, 0, 150);
