@@ -5,7 +5,7 @@
 const char* ssid = "RouterTest";
 const char* password = "routertest";
 
-// Setting Static IP.
+// Define um IP estático
 IPAddress local_IP(192, 168, 0, 150);
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
@@ -20,10 +20,11 @@ DHT dht(DHTPIN, DHTTYPE); // Habilita o sensor
 
 int presenca = 0;
 String estado = "";
-int wait30 = 30000; // time to reconnect when connection is lost.
+int wait30 = 30000; // timer usado em caso de desconexões.
 
 void setup() {
   Serial.begin(9600);
+
   // Define os modos dos pinos utlizados
   pinMode(LED, OUTPUT);
   pinMode(LEDPIR, OUTPUT);
@@ -34,7 +35,7 @@ void setup() {
 
   // Configura o IP estático
   if (!WiFi.config(local_IP, gateway, subnet)) {
-    Serial.println("Error in configuration.");
+    Serial.println("Erro em configurar a rede.");
   }
 
   // Conecta a rede WI-FI
