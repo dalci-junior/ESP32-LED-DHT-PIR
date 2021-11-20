@@ -9,12 +9,12 @@ const char* password = "routertest";
 IPAddress local_IP(192, 168, 0, 150);
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
-WiFiServer server(80); // Port 80
+WiFiServer server(80);
 
 #define LED 32            // Led interruptor no pino 32
 #define DHTPIN 4          // Define o pino de dados do sensor DHT11
 #define DHTTYPE DHT11     // Define o tipo de sensor
-DHT dht(DHTPIN, DHTTYPE); // Habilita o sensor
+DHT dht(DHTPIN, DHTTYPE); // Habilita o sensor DHT
 #define LEDPIR 26         // Led do sensor de presença
 #define DATAPIR 27        // Define o pino de dados do sensor PIR
 
@@ -40,7 +40,7 @@ void setup() {
 
   // Conecta a rede WI-FI
   Serial.println();
-  Serial.print("Connecting with ");
+  Serial.print("Conectando-se com rede: ");
   Serial.println(ssid);
 
   WiFi.begin(ssid, password);
@@ -49,14 +49,14 @@ void setup() {
     delay(500);
     Serial.print(".");
   }
-  Serial.println("Connected with WiFi.");
+  Serial.println("Conectado a rede WiFi.");
 
   // Inicia o servidor web
   server.begin();
-  Serial.println("Web Server started.");
+  Serial.println("Servidor Web iniciado.");
 
   // Mostra o IP do microcontrolador na serial
-  Serial.print("This is IP to connect to the WebServer: ");
+  Serial.print("IP para se conectar ao servidor web: ");
   Serial.print("http://");
   Serial.println(WiFi.localIP());
 }
@@ -67,8 +67,7 @@ void loop() {
   if (presenca == LOW)  // Sem movimento, mantem desligado o led
   {
     digitalWrite(LEDPIR, LOW);
-  } else  // Caso seja detectado um movimento liga o led
-  {
+  } else { // Caso seja detectado um movimento liga o led
     digitalWrite(LEDPIR, HIGH);
   }
 
@@ -109,19 +108,21 @@ void loop() {
     Serial.println(F("Falha ao capturar dados do sensor DHT!"));
     return;
   }
-  // Make the client's request.
+
+  // Faz o pedido do cliente de acordo com o solicitado
   if (req.indexOf("ledon") != -1) {
-    digitalWrite(LED, HIGH);
+    digitalWrite(LED, HIGH); // liga o led
     estado = "LED Ligado";
   }
   if (req.indexOf("ledoff") != -1) {
-    digitalWrite(LED, LOW);
+    digitalWrite(LED, LOW); // desliga o led
     estado = "LED desligado";
   }
 
-
-  //////////////////////////////////////////////
-  // Página WEB. ////////////////////////////
+  //Cria uma pagina web com os dados que são atraves da rede, 
+  //para o app, onde são tratados da forma correta
+  /////////////////////////////
+  // Página WEB. //////////////
   client.println("HTTP/1.1 200 OK");
   client.println("Content-Type: text/html");
   client.println("");
